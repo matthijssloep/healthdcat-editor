@@ -735,6 +735,24 @@ footer {
   letter-spacing: .02em;
 }
 
+/* ─── Field validation ───────────────────────────────────────────────────────── */
+.form-input.is-invalid {
+  border-color: var(--red) !important;
+  box-shadow: 0 0 0 3px rgba(192, 57, 43, .15) !important;
+}
+.field-error {
+  font-size: 12px;
+  color: var(--red);
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.field-error::before {
+  content: '⚠';
+  font-size: 11px;
+}
+
 /* ─── Toast ──────────────────────────────────────────────────────────────────── */
 .toast {
   position: fixed;

@@ -62,10 +62,10 @@ const STEPS = [
   { id: 'identity',      label: 'Identity',       render: renderIdentity,      validate: validateIdentity },
   { id: 'access',        label: 'Access & Legal',  render: renderAccess,        validate: validateAccess },
   { id: 'health',        label: 'Health',          render: renderHealth,        validate: validateHealth },
-  { id: 'population',    label: 'Population',      render: renderPopulation,    validate: () => [] },
+  { id: 'population',    label: 'Population',      render: renderPopulation,    validate: validatePopulation },
   { id: 'contacts',      label: 'Contacts',        render: renderContacts,      validate: () => [] },
   { id: 'distribution',  label: 'Distribution',    render: renderDistribution,  validate: () => [] },
-  { id: 'discovery',     label: 'Discoverability', render: renderDiscovery,     validate: () => [] },
+  { id: 'discovery',     label: 'Discoverability', render: renderDiscovery,     validate: validateDiscovery },
   { id: 'documentation', label: 'Documentation',   render: renderDocumentation, validate: () => [] },
   { id: 'review',        label: 'Review & Publish',render: renderReview,        validate: () => [] },
 ];
@@ -80,7 +80,7 @@ function goToStep(n) {
 
 function next() {
   saveFormData();
-  const errors = STEPS[state.step].validate();
+  const errors = [...STEPS[state.step].validate(), ...validateVisibleFields()];
   if (errors.length > 0) { showErrors(errors); return; }
   clearErrors();
   if (state.step < STEPS.length - 1) goToStep(state.step + 1);
@@ -464,6 +464,25 @@ function validateAccess() {
   const errors = [];
   if (!state.data.accessRights) errors.push('Access rights classification is required.');
   if (!state.data.legislation || state.data.legislation.length === 0) errors.push('At least one applicable legislation must be selected.');
+  const rs = state.data.retentionPeriodStart;
+  const re = state.data.retentionPeriodEnd;
+  if (rs && re && rs > re) errors.push('Retention period end date must be on or after the start date.');
+  return errors;
+}
+
+function validatePopulation() {
+  const errors = [];
+  const min = parseFloat(state.data.minTypicalAge);
+  const max = parseFloat(state.data.maxTypicalAge);
+  if (!isNaN(min) && !isNaN(max) && min > max) errors.push('Minimum typical age cannot be greater than maximum typical age.');
+  return errors;
+}
+
+function validateDiscovery() {
+  const errors = [];
+  const s = state.data.temporalStart;
+  const e = state.data.temporalEnd;
+  if (s && e && s > e) errors.push('Temporal coverage end date must be on or after the start date.');
   return errors;
 }
 
@@ -476,6 +495,81 @@ function validateHealth() {
   if (!isPublic && !state.data.hdabName) {
     errors.push('Health Data Access Body name is required for non-public and restricted datasets.');
   }
+  return errors;
+}
+
+// ─── Field-level validation ────────────────────────────────────────────────────
+
+function isValidURL(val) {
+  if (!val) return true;
+  try {
+    const u = new URL(val);
+    return u.protocol === 'http:' || u.protocol === 'https:';
+  } catch { return false; }
+}
+
+function isValidEmail(val) {
+  if (!val) return true;
+  return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(val);
+}
+
+function isValidIRI(val) {
+  if (!val) return true;
+  return /^[a-zA-Z][a-zA-Z0-9+\-.]*:[^\s]+$/.test(val);
+}
+
+function showFieldError(input, message) {
+  input.classList.add('is-invalid');
+  const parent = input.closest('.field-group') || input.parentNode;
+  let err = parent.querySelector('.field-error');
+  if (!err) {
+    err = document.createElement('div');
+    err.className = 'field-error';
+    // Insert after the input's containing element (could be a .multi-row or the input itself)
+    const anchor = input.closest('.multi-row') || input;
+    anchor.insertAdjacentElement('afterend', err);
+  }
+  err.textContent = message;
+}
+
+function clearFieldError(input) {
+  input.classList.remove('is-invalid');
+  const parent = input.closest('.field-group') || input.parentNode;
+  parent.querySelector('.field-error')?.remove();
+}
+
+function validateFieldEl(input) {
+  const val = input.value.trim();
+  if (input.type === 'url') {
+    if (!isValidURL(val)) {
+      showFieldError(input, 'Must be a valid URL (http:// or https://).');
+      return false;
+    }
+  } else if (input.dataset.validate === 'iri') {
+    if (!isValidIRI(val)) {
+      showFieldError(input, 'Must be a valid URI (e.g. https://… or urn:…).');
+      return false;
+    }
+  } else if (input.type === 'email') {
+    if (!isValidEmail(val)) {
+      showFieldError(input, 'Must be a valid email address.');
+      return false;
+    }
+  }
+  clearFieldError(input);
+  return true;
+}
+
+function validateVisibleFields() {
+  const errors = [];
+  document.querySelectorAll(
+    'input[type="url"], input[type="email"], input[data-validate="iri"]'
+  ).forEach(input => {
+    if (!validateFieldEl(input)) {
+      const label = input.closest('.field-group')?.querySelector('.field-label')?.childNodes[0]?.textContent?.trim();
+      errors.push(`${label || 'A field'}: invalid format — please correct before continuing.`);
+    }
+  });
   return errors;
 }
 
@@ -509,8 +603,8 @@ function renderIdentity(container) {
       <h3>Version</h3>
       ${fieldWrap('Version','Version number or label (e.g. <code>1.0</code>, <code>2024-Q1</code>).','optional',
         `<input type="text" class="form-input form-input--short" name="version" value="${escHtml(d.version)}" placeholder="e.g. 1.0">`,'version')}
-      ${fieldWrap('Custom Identifier','Override the dataset identifier (defaults to the URI above).','optional',
-        `<input type="text" class="form-input" name="identifier" value="${escHtml(d.identifier)}" placeholder="e.g. https://data.yourdomain.nl/datasets/my-dataset">`,'identifier')}
+      ${fieldWrap('Custom Identifier','Override the dataset identifier (defaults to the URI above). Must be a valid URI.','optional',
+        `<input type="text" class="form-input" name="identifier" data-validate="iri" value="${escHtml(d.identifier)}" placeholder="e.g. https://data.yourdomain.nl/datasets/my-dataset">`,'identifier')}
     </div>`;
 }
 
@@ -1044,5 +1138,14 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('next-btn').addEventListener('click', next);
   document.getElementById('save-btn').addEventListener('click', saveDraft);
   document.getElementById('load-btn').addEventListener('click', loadDraft);
+
+  // Inline validation on blur for URL, email, and IRI fields
+  document.addEventListener('blur', e => {
+    const input = e.target;
+    if (input.matches('input[type="url"], input[type="email"], input[data-validate="iri"]')) {
+      validateFieldEl(input);
+    }
+  }, true);
+
   renderCurrentStep();
 });
