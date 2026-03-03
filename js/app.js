@@ -135,12 +135,27 @@ function updateNav() {
   }
 }
 
+function initTomSelects() {
+  document.querySelectorAll('select.ts-select').forEach(el => {
+    if (el.tomselect) return; // already initialised
+    new TomSelect(el, {
+      plugins: ['remove_button'],
+      placeholder: el.dataset.placeholder || 'Search or select…',
+      maxOptions: null,
+      onInitialize() {
+        // keep the native <select> in sync so saveFormData() can read it without tomselect API
+      },
+    });
+  });
+}
+
 function renderCurrentStep() {
   renderProgress();
   updateNav();
   const container = document.getElementById('step-container');
   container.innerHTML = '';
   STEPS[state.step].render(container);
+  initTomSelects();
 }
 
 // ─── HTML helpers ─────────────────────────────────────────────────────────────
@@ -170,13 +185,11 @@ function vocabSelect(items, selected, name, placeholder = 'Select...') {
   </select>`;
 }
 
-function checkboxGroup(items, selectedArr, fieldName) {
-  return `<div class="checkbox-group">
-    ${items.map(item => `<label class="checkbox-item">
-      <input type="checkbox" name="${fieldName}" value="${item.uri}" ${selectedArr.includes(item.uri) ? 'checked' : ''}>
-      <span>${item.label}</span>
-    </label>`).join('')}
-  </div>`;
+function multiSelect(items, selectedArr, fieldName, placeholder) {
+  const opts = items.map(item =>
+    `<option value="${item.uri}" ${selectedArr.includes(item.uri) ? 'selected' : ''}>${item.label}</option>`
+  ).join('');
+  return `<select multiple class="ts-select" name="${fieldName}" data-placeholder="${placeholder || 'Search or select…'}">${opts}</select>`;
 }
 
 function multiLangField(entries, fieldKey, placeholder) {
@@ -314,10 +327,11 @@ function saveFormData() {
     }));
   }
 
-  // Checkbox groups — only update if field is rendered
+  // Multi-selects (Tom Select) — only update if field is rendered
   ['legislation', 'healthCategories', 'healthThemes', 'legalBases', 'languages', 'spatialCoverage', 'themes'].forEach(key => {
-    if (!document.querySelector(`input[name="${key}"]`)) return;
-    state.data[key] = Array.from(document.querySelectorAll(`input[name="${key}"]:checked`)).map(cb => cb.value);
+    const el = document.querySelector(`select[name="${key}"]`);
+    if (!el) return;
+    state.data[key] = el.tomselect ? el.tomselect.getValue() : Array.from(el.selectedOptions).map(o => o.value);
   });
 
   // Creators
@@ -532,13 +546,13 @@ function renderAccess(container) {
     <div class="card">
       <h3>Applicable Legislation</h3>
       ${fieldWrap('Legislation','Select all legislation that mandates or governs this dataset.','required',
-        checkboxGroup(VOCAB.legislation, d.legislation, 'legislation'),'legislation')}
+        multiSelect(VOCAB.legislation, d.legislation, 'legislation', 'Search legislation…'),'legislation')}
     </div>
     <div class="card">
       <h3>Legal Basis &amp; Retention</h3>
       ${fieldWrap('Legal Basis (GDPR)','The GDPR article under which personal data is processed.',
         isNonPublic ? 'recommended' : 'optional',
-        checkboxGroup(VOCAB.legalBases, d.legalBases, 'legalBases'),'legalBases')}
+        multiSelect(VOCAB.legalBases, d.legalBases, 'legalBases', 'Search legal basis…'),'legalBases')}
       <div class="field-row">
         ${fieldWrap('Retention Period Start','When does/did the retention period begin?','optional',
           `<input type="date" class="form-input" name="retentionPeriodStart" value="${escHtml(d.retentionPeriodStart)}">`,'retentionStart')}
@@ -580,12 +594,12 @@ function renderHealth(container) {
     <div class="card">
       <h3>Health Categories</h3>
       ${fieldWrap('Health Category','Select all categories that describe the type of health data in this dataset.','required',
-        checkboxGroup(VOCAB.healthCategories, d.healthCategories, 'healthCategories'),'healthCategories')}
+        multiSelect(VOCAB.healthCategories, d.healthCategories, 'healthCategories', 'Search health categories…'),'healthCategories')}
     </div>
     <div class="card">
       <h3>Health Themes</h3>
       ${fieldWrap('Health Theme','Select disease areas or health themes covered.','optional',
-        checkboxGroup(VOCAB.healthThemes, d.healthThemes, 'healthThemes'),'healthThemes')}
+        multiSelect(VOCAB.healthThemes, d.healthThemes, 'healthThemes', 'Search health themes…'),'healthThemes')}
     </div>
     <div class="card">
       <h3>Health Data Access Body (HDAB)</h3>
@@ -784,7 +798,7 @@ function renderDiscovery(container) {
       ${fieldWrap('Keywords','Search terms for this dataset. One per row.','recommended',
         multiLangField(d.keywords,'keywords','e.g. diabetes'),'keywords')}
       ${fieldWrap('EU Data Theme','Thematic category from the EU vocabulary.','recommended',
-        checkboxGroup(VOCAB.dataThemes, d.themes, 'themes'),'themes')}
+        multiSelect(VOCAB.dataThemes, d.themes, 'themes', 'Search EU data themes…'),'themes')}
       ${fieldWrap('Purpose','Statement of the purpose for which this data is collected or processed.','optional',
         multiLangField(d.purpose,'purpose','e.g. Secondary use for academic research on cardiovascular disease'),'purpose')}
       ${fieldWrap('Provenance','Lineage and methodology — how the data was collected or generated.','optional',
@@ -793,9 +807,9 @@ function renderDiscovery(container) {
     <div class="card">
       <h3>Geographic &amp; Temporal Coverage</h3>
       ${fieldWrap('Languages of the Dataset','Languages in which the data is available.','recommended',
-        checkboxGroup(VOCAB.languages, d.languages, 'languages'),'languages')}
+        multiSelect(VOCAB.languages, d.languages, 'languages', 'Search languages…'),'languages')}
       ${fieldWrap('Spatial Coverage','Country or region the dataset covers.','recommended',
-        checkboxGroup(VOCAB.countries, d.spatialCoverage, 'spatialCoverage'),'spatialCoverage')}
+        multiSelect(VOCAB.countries, d.spatialCoverage, 'spatialCoverage', 'Search countries…'),'spatialCoverage')}
       ${fieldWrap('Spatial Resolution (metres)','Geographic precision of the data, in metres.','optional',
         `<input type="number" min="0" step="any" class="form-input form-input--short" name="spatialResolutionInMeters" value="${escHtml(d.spatialResolutionInMeters)}" placeholder="e.g. 1000">`,'spatialResolutionInMeters')}
       <div class="field-row">

@@ -602,6 +602,48 @@ footer {
 }
 .btn-outline:hover { background: rgba(255,255,255,.22); }
 
+/* ─── Tom Select overrides ───────────────────────────────────────────────────── */
+.ts-control {
+  border: 1px solid var(--gray-300) !important;
+  border-radius: var(--radius-sm) !important;
+  box-shadow: none !important;
+  padding: 6px 8px !important;
+  min-height: 40px !important;
+  font-size: 14px !important;
+  font-family: var(--font) !important;
+  background: white !important;
+}
+.ts-wrapper.focus .ts-control {
+  border-color: var(--blue) !important;
+  box-shadow: 0 0 0 3px rgba(26,107,191,.15) !important;
+}
+.ts-control .item {
+  background: var(--blue-light) !important;
+  color: var(--blue-dark) !important;
+  border: 1px solid #b8d4f5 !important;
+  border-radius: 4px !important;
+  font-size: 13px !important;
+  padding: 2px 6px !important;
+}
+.ts-control .item .remove {
+  border-left: 1px solid #b8d4f5 !important;
+  color: var(--blue) !important;
+  margin-left: 4px !important;
+}
+.ts-control .item .remove:hover { color: var(--red) !important; }
+.ts-dropdown {
+  border: 1px solid var(--gray-300) !important;
+  border-radius: var(--radius-sm) !important;
+  box-shadow: var(--shadow-md) !important;
+  font-size: 14px !important;
+  font-family: var(--font) !important;
+}
+.ts-dropdown .option { padding: 8px 12px !important; }
+.ts-dropdown .option:hover,
+.ts-dropdown .option.active { background: var(--blue-light) !important; color: var(--blue-dark) !important; }
+.ts-dropdown .option.selected { background: var(--blue) !important; color: white !important; }
+.ts-wrapper { width: 100%; }
+
 /* ─── Info banner ────────────────────────────────────────────────────────────── */
 .info-banner {
   background: var(--blue-light);
