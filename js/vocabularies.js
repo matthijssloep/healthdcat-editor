@@ -134,6 +134,55 @@ const VOCAB = {
     { label: 'Education, Culture, Sport', uri: 'http://publications.europa.eu/resource/authority/data-theme/EDUC' },
   ],
 
+  mediaTypes: [
+    { label: 'text/csv', uri: 'https://www.iana.org/assignments/media-types/text/csv' },
+    { label: 'application/json', uri: 'https://www.iana.org/assignments/media-types/application/json' },
+    { label: 'application/xml', uri: 'https://www.iana.org/assignments/media-types/application/xml' },
+    { label: 'application/fhir+json', uri: 'https://www.iana.org/assignments/media-types/application/fhir+json' },
+    { label: 'application/fhir+xml', uri: 'https://www.iana.org/assignments/media-types/application/fhir+xml' },
+    { label: 'application/dicom', uri: 'https://www.iana.org/assignments/media-types/application/dicom' },
+    { label: 'application/parquet', uri: 'https://www.iana.org/assignments/media-types/application/parquet' },
+    { label: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', uri: 'https://www.iana.org/assignments/media-types/application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' },
+    { label: 'text/plain', uri: 'https://www.iana.org/assignments/media-types/text/plain' },
+  ],
+
+  distributionStatuses: [
+    { label: 'Completed', uri: 'http://purl.org/adms/status/Completed' },
+    { label: 'Under Development', uri: 'http://purl.org/adms/status/UnderDevelopment' },
+    { label: 'Deprecated', uri: 'http://purl.org/adms/status/Deprecated' },
+    { label: 'Withdrawn', uri: 'http://purl.org/adms/status/Withdrawn' },
+  ],
+
+  compressionFormats: [
+    { label: 'ZIP (.zip)', uri: 'https://www.iana.org/assignments/media-types/application/zip' },
+    { label: 'GZIP (.gz)', uri: 'https://www.iana.org/assignments/media-types/application/gzip' },
+    { label: 'TAR (.tar)', uri: 'https://www.iana.org/assignments/media-types/application/x-tar' },
+    { label: '7-Zip (.7z)', uri: 'https://www.iana.org/assignments/media-types/application/x-7z-compressed' },
+  ],
+
+  relationRoles: [
+    { label: 'Is Part Of', uri: 'http://www.iana.org/assignments/relation/ispartof' },
+    { label: 'Has Part', uri: 'http://www.iana.org/assignments/relation/hasPart' },
+    { label: 'Is Version Of', uri: 'http://www.iana.org/assignments/relation/isversionof' },
+    { label: 'Has Version', uri: 'http://www.iana.org/assignments/relation/hasversion' },
+    { label: 'Is Referenced By', uri: 'http://www.iana.org/assignments/relation/isreferencedby' },
+    { label: 'References', uri: 'http://www.iana.org/assignments/relation/references' },
+    { label: 'Replaces', uri: 'http://www.iana.org/assignments/relation/replaces' },
+    { label: 'Is Replaced By', uri: 'http://www.iana.org/assignments/relation/isreplacedby' },
+  ],
+
+  attributionRoles: [
+    { label: 'Author', uri: 'http://www.loc.gov/marc/relators/aut' },
+    { label: 'Contributor', uri: 'http://www.loc.gov/marc/relators/ctb' },
+    { label: 'Data Curator', uri: 'http://www.loc.gov/marc/relators/dtc' },
+    { label: 'Data Manager', uri: 'http://www.loc.gov/marc/relators/dtm' },
+    { label: 'Distributor', uri: 'http://www.loc.gov/marc/relators/dst' },
+    { label: 'Principal Investigator', uri: 'http://www.loc.gov/marc/relators/rth' },
+    { label: 'Researcher', uri: 'http://www.loc.gov/marc/relators/res' },
+    { label: 'Rights Holder', uri: 'http://www.loc.gov/marc/relators/rhe' },
+    { label: 'Sponsor', uri: 'http://www.loc.gov/marc/relators/spn' },
+  ],
+
   legalBases: [
     { label: 'GDPR Art. 9(2)(a) — Explicit consent', uri: 'https://w3id.org/dpv/dpv-gdpr#A9-2-a' },
     { label: 'GDPR Art. 9(2)(c) — Vital interests', uri: 'https://w3id.org/dpv/dpv-gdpr#A9-2-c' },

@@ -602,6 +602,97 @@ footer {
 }
 .btn-outline:hover { background: rgba(255,255,255,.22); }
 
+/* ─── Info banner ────────────────────────────────────────────────────────────── */
+.info-banner {
+  background: var(--blue-light);
+  border: 1px solid #b8d4f5;
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  font-size: 13px;
+  color: var(--blue-dark);
+  margin-top: 12px;
+  line-height: 1.5;
+}
+
+/* ─── Sub-cards (creators, doc pages, attributions etc.) ─────────────────────── */
+.sub-card {
+  background: var(--gray-50);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin-bottom: 12px;
+}
+.sub-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--gray-200);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--gray-700);
+}
+.btn-remove-sub {
+  background: none;
+  border: 1px solid var(--gray-300);
+  color: var(--gray-500);
+  font-size: 12px;
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all .15s;
+}
+.btn-remove-sub:hover { background: var(--red-light); border-color: var(--red); color: var(--red); }
+
+.btn-add-sub {
+  background: none;
+  border: 1px dashed var(--blue);
+  color: var(--blue);
+  font-size: 13px;
+  padding: 7px 14px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all .15s;
+  display: inline-block;
+  margin-top: 4px;
+}
+.btn-add-sub:hover { background: var(--blue-light); }
+
+/* ─── Duration input ─────────────────────────────────────────────────────────── */
+.duration-input { display: flex; flex-direction: column; gap: 10px; }
+.duration-fields {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.duration-field {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.duration-field input {
+  width: 72px;
+  text-align: center;
+  padding: 7px 8px;
+}
+.duration-field label {
+  font-size: 11px;
+  color: var(--gray-500);
+  letter-spacing: .03em;
+}
+.duration-preview {
+  font-family: var(--mono);
+  font-size: 13px;
+  background: var(--gray-100);
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  color: var(--blue-dark);
+  border: 1px solid var(--gray-200);
+  letter-spacing: .02em;
+}
+
 /* ─── Toast ──────────────────────────────────────────────────────────────────── */
 .toast {
   position: fixed;
