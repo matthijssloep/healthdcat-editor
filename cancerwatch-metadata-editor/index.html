@@ -15,7 +15,7 @@
   <header>
     <div class="header-content">
       <div class="logo">
-        <img src="https://cancerwatch.iconcologia.net/wp-content/uploads/2025/10/logo_cw.png" alt="CancerWatch" style="height:36px;">
+        <img class="logo-img" src="https://cancerwatch.iconcologia.net/wp-content/uploads/2025/10/logo_cw.png" alt="CancerWatch">
         <div>
           <div class="logo-text">Metadata Editor</div>
           <div class="logo-sub">HealthDCAT-AP · v6</div>
@@ -28,19 +28,19 @@
     </div>
   </header>
 
-  <div class="progress-bar">
-    <div class="progress-steps" id="progress-steps">
+  <div class="app-layout">
+    <nav class="step-sidebar" id="progress-steps">
       <!-- Rendered by JS -->
+    </nav>
+    <div class="app-main">
+      <div class="error-banner" id="error-banner" role="alert"></div>
+      <main>
+        <div id="step-container">
+          <!-- Step content rendered by JS -->
+        </div>
+      </main>
     </div>
   </div>
-
-  <div class="error-banner" id="error-banner" role="alert"></div>
-
-  <main>
-    <div id="step-container">
-      <!-- Step content rendered by JS -->
-    </div>
-  </main>
 
   <div class="toast" id="toast"></div>
 
