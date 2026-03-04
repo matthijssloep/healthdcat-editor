@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CancerWatch Metadata Editor</title>
+  <link rel="icon" href="https://cancerwatch.iconcologia.net/wp-content/uploads/2025/11/cropped-favicon-300x300.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/css/tom-select.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <header>
+    <div class="header-content">
+      <div class="logo">
+        <img class="logo-img" src="https://cancerwatch.iconcologia.net/wp-content/uploads/2025/10/logo_cw.png" alt="CancerWatch">
+        <div>
+          <div class="logo-text">Metadata Editor</div>
+          <div class="logo-sub">HealthDCAT-AP · v6</div>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button id="save-btn" class="btn-outline" title="Save your progress locally">Save Draft</button>
+        <button id="load-btn" class="btn-outline" title="Load a previously saved draft">Load Draft</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="progress-bar">
+    <div class="progress-steps" id="progress-steps">
+      <!-- Rendered by JS -->
+    </div>
+  </div>
+
+  <div id="bg-logo" aria-hidden="true"></div>
+  <div class="error-banner" id="error-banner" role="alert"></div>
+
+  <main>
+    <div id="step-container">
+      <!-- Step content rendered by JS -->
+    </div>
+  </main>
+
+  <div class="toast" id="toast"></div>
+
+  <div id="help-overlay" class="help-overlay"></div>
+  <aside id="help-panel" class="help-panel" aria-label="Field guidance">
+    <div class="help-panel-header">
+      <span>Field Guidance</span>
+      <button id="help-close" class="help-close" aria-label="Close">&#x2715;</button>
+    </div>
+    <div id="help-panel-body" class="help-panel-body"></div>
+  </aside>
+
+  <footer>
+    <div class="footer-nav">
+      <button id="back-btn" class="btn-secondary" disabled>&#8592; Back</button>
+      <span class="step-info" id="step-info"></span>
+      <button id="next-btn" class="btn-primary">Next &#8594;</button>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js"></script>
+  <script src="js/vocabularies.js"></script>
+  <script src="js/fieldHelp.js"></script>
+  <script src="js/ttl-generator.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+</html>
