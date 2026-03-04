@@ -164,9 +164,58 @@ function badge(type) {
   return `<span class="badge badge-${type}">${{required:'Required',recommended:'Recommended',optional:'Optional'}[type]}</span>`;
 }
 
+// Maps lowercased field labels (as used in fieldWrap calls) to FIELD_HELP keys
+const HELP_LABEL_MAP = {
+  'dataset title': 'title',
+  'alternative title': 'title',
+  'description': 'description',
+  'version': 'version',
+  'version notes': 'versionNotes',
+  'access rights': 'accessRights',
+  'personal data': 'personalData',
+  'legislation': 'applicableLegislation',
+  'legal basis (gdpr)': 'legalBasis',
+  'retention note': 'retentionPeriod',
+  'health category': 'healthTheme',
+  'health theme': 'healthTheme',
+  'coding system': 'codingSystem',
+  'code values': 'codeValues',
+  'population coverage': 'populationCoverage',
+  'number of records': 'numberOfRecords',
+  'number of unique individuals': 'numberOfUniqueIndividuals',
+  'minimum typical age': 'minimumTypicalAge',
+  'maximum typical age': 'maximumTypicalAge',
+  'publisher name': 'publisher',
+  'contact email': 'contactPoint',
+  'keyword / tags': 'keyword',
+  'language': 'language',
+  'theme': 'theme',
+  'update frequency': 'frequency',
+  'temporal coverage': 'temporalCoverage',
+  'release date': 'releaseDate',
+  'modification date': 'modificationDate',
+  'status': 'status',
+  'geographical coverage': 'geographicalCoverage',
+  'access url': 'dist_accessUrl',
+  'download url': 'dist_downloadUrl',
+  'file format': 'dist_format',
+  'media type': 'dist_mediaType',
+  'distribution title': 'dist_title',
+  'distribution description': 'dist_description',
+  'byte size': 'dist_byteSize',
+  'distribution language': 'dist_language',
+  'distribution license': 'dist_license',
+  'distribution status': 'dist_status',
+};
+
 function fieldWrap(label, hint, badgeType, inner, id) {
+  const plainLabel = label.replace(/<[^>]+>/g, '').trim().toLowerCase();
+  const helpKey = HELP_LABEL_MAP[plainLabel];
+  const helpBtn = (helpKey && typeof FIELD_HELP !== 'undefined' && FIELD_HELP[helpKey])
+    ? `<button type="button" class="help-btn" data-help-key="${helpKey}" aria-label="Guidance for ${label}">?</button>`
+    : '';
   return `<div class="field-group" id="fg-${id}">
-    <label class="field-label">${label} ${badge(badgeType)}</label>
+    <label class="field-label">${label} ${badge(badgeType)}${helpBtn}</label>
     ${hint ? `<div class="field-hint">${hint}</div>` : ''}
     ${inner}
   </div>`;
@@ -1123,6 +1172,31 @@ function loadDraft() {
   } catch (e) { showToast('Could not load draft.', true); }
 }
 
+// ─── Help panel ───────────────────────────────────────────────────────────────
+
+function openHelpPanel(key) {
+  const help = FIELD_HELP[key];
+  if (!help) return;
+  const reqClass = { Mandatory: 'required', Recommended: 'recommended', Optional: 'optional' }[help.requirement] || 'optional';
+  document.getElementById('help-panel-body').innerHTML = `
+    <div class="help-field-name">${help.label}</div>
+    <div class="help-uri">${help.uri}</div>
+    <span class="badge badge-${reqClass}" style="margin-bottom:16px;display:inline-block">${help.requirement || ''}</span>
+    ${help.definition ? `<div class="help-section"><h4>Definition</h4><p>${escHtml(help.definition)}</p></div>` : ''}
+    ${help.usageNote ? `<div class="help-section"><h4>Guidance</h4><p>${escHtml(help.usageNote).replace(/\n/g, '<br>')}</p></div>` : ''}
+    ${help.iknlExample ? `<div class="help-section help-example"><h4>IKNL Example</h4><code>${escHtml(help.iknlExample)}</code></div>` : ''}
+    ${help.iknlComment ? `<div class="help-section help-iknl-comment"><h4>IKNL Notes</h4><p>${escHtml(help.iknlComment)}</p></div>` : ''}
+    ${help.specUrl ? `<a class="help-spec-link" href="${help.specUrl}" target="_blank" rel="noopener">View in HealthDCAT-AP spec ↗</a>` : ''}
+  `;
+  document.getElementById('help-overlay').classList.add('is-open');
+  document.getElementById('help-panel').classList.add('is-open');
+}
+
+function closeHelpPanel() {
+  document.getElementById('help-overlay').classList.remove('is-open');
+  document.getElementById('help-panel').classList.remove('is-open');
+}
+
 function showToast(msg, isError = false) {
   const toast = document.getElementById('toast');
   toast.textContent = msg;
@@ -1138,6 +1212,14 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('next-btn').addEventListener('click', next);
   document.getElementById('save-btn').addEventListener('click', saveDraft);
   document.getElementById('load-btn').addEventListener('click', loadDraft);
+  document.getElementById('help-close').addEventListener('click', closeHelpPanel);
+  document.getElementById('help-overlay').addEventListener('click', closeHelpPanel);
+
+  // Help panel: open on "?" button click
+  document.addEventListener('click', e => {
+    const btn = e.target.closest('.help-btn');
+    if (btn) openHelpPanel(btn.dataset.helpKey);
+  });
 
   // Inline validation on blur for URL, email, and IRI fields
   document.addEventListener('blur', e => {

@@ -1,14 +1,14 @@
-/* style.css — HealthDCAT-AP Metadata Editor */
+/* style.css — CancerWatch Metadata Editor */
 
 /* ─── Variables ──────────────────────────────────────────────────────────────── */
 :root {
-  --blue:        #1a6bbf;
-  --blue-dark:   #0d4e8f;
-  --blue-light:  #e8f1fb;
+  --blue:        #41B1E0;
+  --blue-dark:   #1870A0;
+  --blue-light:  #E8F5FB;
   --green:       #18a058;
   --green-light: #e8f7ef;
-  --amber:       #c47400;
-  --amber-light: #fef3e2;
+  --amber:       #F39200;
+  --amber-light: #FEF0DC;
   --red:         #c0392b;
   --red-light:   #fdecea;
   --gray-50:     #f8f9fa;
@@ -18,21 +18,34 @@
   --gray-500:    #868e96;
   --gray-700:    #495057;
   --gray-900:    #212529;
+  --charcoal:    #104972;
+  --navy-deep:   #023399;
+  --yellow:      #FFED00;
+  --teal:        #00C3B1;
   --radius:      8px;
   --radius-sm:   4px;
   --shadow:      0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
   --shadow-md:   0 4px 12px rgba(0,0,0,.1);
-  --font:        -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font:        'Montserrat', 'Century Gothic', 'Trebuchet MS', sans-serif;
   --mono:        'Consolas', 'Monaco', 'Courier New', monospace;
+  --header-h:    92px;
 }
 
 /* ─── Reset ──────────────────────────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: var(--font); font-size: 15px; color: var(--gray-900); background: var(--gray-100); min-height: 100vh; display: flex; flex-direction: column; }
+body { font-family: var(--font); font-size: 15px; color: var(--gray-900); background: #EDF2F7; min-height: 100vh; display: flex; flex-direction: column; }
 
 /* ─── Header ─────────────────────────────────────────────────────────────────── */
+@keyframes gradient-drift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
 header {
-  background: var(--blue-dark);
+  background: linear-gradient(-45deg, #104972, #1870A0, #41B1E0, #104972);
+  background-size: 400% 400%;
+  animation: gradient-drift 60s ease infinite;
   color: white;
   box-shadow: var(--shadow-md);
   position: sticky;
@@ -53,17 +66,19 @@ header {
   gap: 10px;
   text-decoration: none;
 }
-.logo-icon {
-  font-size: 22px;
+.logo-img {
+  height: 64px;
+  display: block;
+  mix-blend-mode: multiply;
 }
 .logo-text {
-  font-size: 17px;
+  font-size: 20px;
   font-weight: 700;
   letter-spacing: -.01em;
   color: white;
 }
 .logo-sub {
-  font-size: 11px;
+  font-size: 12px;
   color: rgba(255,255,255,.65);
   letter-spacing: .03em;
 }
@@ -74,12 +89,11 @@ header {
 
 /* ─── Progress bar ───────────────────────────────────────────────────────────── */
 .progress-bar {
-  background: white;
-  border-bottom: 1px solid var(--gray-200);
+  background: var(--charcoal);
   position: sticky;
-  top: 57px;
+  top: var(--header-h);
   z-index: 90;
-  box-shadow: 0 2px 6px rgba(0,0,0,.04);
+  box-shadow: 0 2px 8px rgba(0,0,0,.25);
 }
 .progress-steps {
   max-width: 900px;
@@ -97,7 +111,7 @@ header {
   flex-direction: column;
   align-items: center;
   gap: 4px;
-  padding: 10px 4px;
+  padding: 10px 6px;
   cursor: default;
   flex-shrink: 0;
 }
@@ -108,8 +122,8 @@ header {
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  background: var(--gray-300);
-  color: var(--gray-500);
+  background: rgba(255,255,255,.15);
+  color: rgba(255,255,255,.45);
   font-size: 12px;
   font-weight: 700;
   display: flex;
@@ -124,21 +138,22 @@ header {
 .step-pip.active .pip-circle {
   background: var(--blue);
   color: white;
-  box-shadow: 0 0 0 3px rgba(26, 107, 191, .25);
+  box-shadow: 0 0 0 3px rgba(65, 177, 224, .3);
 }
+
 .pip-label {
   font-size: 10px;
-  color: var(--gray-500);
+  color: rgba(255,255,255,.45);
   white-space: nowrap;
   letter-spacing: .02em;
 }
-.step-pip.active .pip-label { color: var(--blue); font-weight: 600; }
-.step-pip.completed .pip-label { color: var(--green); }
+.step-pip.active .pip-label { color: var(--blue); font-weight: 700; }
+.step-pip.completed .pip-label { color: rgba(255,255,255,.7); }
 
 .step-connector {
   flex: 1;
   height: 2px;
-  background: var(--gray-200);
+  background: rgba(255,255,255,.15);
   min-width: 16px;
 }
 
@@ -167,6 +182,20 @@ main {
   line-height: 1.6;
 }
 
+/* ─── Background watermark logo ──────────────────────────────────────────────── */
+#bg-logo {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 640px;
+  height: 200px;
+  background: url('https://cancerwatch.iconcologia.net/wp-content/uploads/2025/10/logo_cw.png') no-repeat center / contain;
+  opacity: 0.07;
+  pointer-events: none;
+  z-index: 0;
+}
+
 /* ─── Cards ──────────────────────────────────────────────────────────────────── */
 .card {
   background: white;
@@ -175,6 +204,8 @@ main {
   padding: 24px;
   margin-bottom: 20px;
   box-shadow: var(--shadow);
+  position: relative;
+  z-index: 1;
 }
 .card h3 {
   font-size: 15px;
@@ -182,7 +213,9 @@ main {
   color: var(--gray-900);
   margin-bottom: 16px;
   padding-bottom: 12px;
+  padding-left: 12px;
   border-bottom: 1px solid var(--gray-100);
+  border-left: 3px solid var(--blue);
 }
 .card-desc {
   font-size: 13px;
@@ -259,7 +292,7 @@ main {
 .form-input:focus, .form-select:focus {
   outline: none;
   border-color: var(--blue);
-  box-shadow: 0 0 0 3px rgba(26, 107, 191, .15);
+  box-shadow: 0 0 0 3px rgba(99, 169, 220, .15);
 }
 .form-input--short { max-width: 200px; }
 
@@ -303,7 +336,7 @@ textarea.form-input {
   cursor: pointer;
   appearance: none;
 }
-.lang-select:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(26,107,191,.15); }
+.lang-select:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(65,177,224,.15); }
 
 .btn-remove {
   width: 30px;
@@ -514,9 +547,9 @@ textarea.form-input {
   font-weight: 700;
   cursor: pointer;
   transition: all .15s;
-  box-shadow: 0 2px 8px rgba(26,107,191,.3);
+  box-shadow: 0 2px 8px rgba(65,177,224,.3);
 }
-.btn-publish:hover { background: var(--blue-dark); box-shadow: 0 4px 12px rgba(26,107,191,.4); }
+.btn-publish:hover { background: var(--blue-dark); box-shadow: 0 4px 12px rgba(65,177,224,.4); }
 .btn-publish--warn { background: #b7791f; }
 .btn-publish--warn:hover { background: #975f17; }
 .publish-hint {
@@ -615,18 +648,18 @@ footer {
 }
 .ts-wrapper.focus .ts-control {
   border-color: var(--blue) !important;
-  box-shadow: 0 0 0 3px rgba(26,107,191,.15) !important;
+  box-shadow: 0 0 0 3px rgba(65,177,224,.15) !important;
 }
 .ts-control .item {
   background: var(--blue-light) !important;
   color: var(--blue-dark) !important;
-  border: 1px solid #b8d4f5 !important;
+  border: 1px solid #b3dff2 !important;
   border-radius: 4px !important;
   font-size: 13px !important;
   padding: 2px 6px !important;
 }
 .ts-control .item .remove {
-  border-left: 1px solid #b8d4f5 !important;
+  border-left: 1px solid #b3dff2 !important;
   color: var(--blue) !important;
   margin-left: 4px !important;
 }
@@ -647,7 +680,7 @@ footer {
 /* ─── Info banner ────────────────────────────────────────────────────────────── */
 .info-banner {
   background: var(--blue-light);
-  border: 1px solid #b8d4f5;
+  border: 1px solid #b3dff2;
   border-radius: var(--radius-sm);
   padding: 10px 14px;
   font-size: 13px;
@@ -752,6 +785,147 @@ footer {
   content: '⚠';
   font-size: 11px;
 }
+
+/* ─── Help button ────────────────────────────────────────────────────────────── */
+.help-btn {
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  border: 1.5px solid var(--blue);
+  background: white;
+  color: var(--blue);
+  font-size: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 4px;
+  transition: all .15s;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+.help-btn:hover { background: var(--blue); color: white; }
+
+/* ─── Help panel ─────────────────────────────────────────────────────────────── */
+.help-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.2);
+  z-index: 200;
+}
+.help-overlay.is-open { display: block; }
+
+.help-panel {
+  position: fixed;
+  top: 0;
+  right: -420px;
+  width: 400px;
+  max-width: 100vw;
+  height: 100vh;
+  background: white;
+  box-shadow: -4px 0 20px rgba(0,0,0,.12);
+  z-index: 201;
+  display: flex;
+  flex-direction: column;
+  transition: right .25s ease;
+}
+.help-panel.is-open { right: 0; }
+
+.help-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--gray-200);
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--gray-700);
+  background: var(--gray-50);
+  flex-shrink: 0;
+  letter-spacing: .03em;
+  text-transform: uppercase;
+}
+.help-close {
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  color: var(--gray-500);
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+  line-height: 1;
+}
+.help-close:hover { background: var(--gray-200); color: var(--gray-900); }
+
+.help-panel-body {
+  padding: 20px;
+  overflow-y: auto;
+  flex: 1;
+}
+.help-field-name {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--gray-900);
+  text-transform: capitalize;
+  margin-bottom: 4px;
+  line-height: 1.3;
+}
+.help-uri {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--gray-500);
+  margin-bottom: 16px;
+}
+.help-section {
+  margin-bottom: 16px;
+}
+.help-section h4 {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  color: var(--gray-500);
+  margin-bottom: 6px;
+}
+.help-section p {
+  font-size: 13px;
+  color: var(--gray-700);
+  line-height: 1.65;
+}
+.help-example {
+  background: var(--blue-light);
+  border: 1px solid #b3dff2;
+  border-radius: var(--radius-sm);
+  padding: 12px;
+}
+.help-example code {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--blue-dark);
+  word-break: break-all;
+  white-space: pre-wrap;
+}
+.help-iknl-comment {
+  background: var(--gray-50);
+  border-left: 3px solid var(--gray-300);
+  padding: 10px 12px;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+.help-iknl-comment p { font-style: italic; }
+.help-spec-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 4px;
+  font-size: 13px;
+  color: var(--blue);
+  text-decoration: none;
+  font-weight: 600;
+}
+.help-spec-link:hover { text-decoration: underline; }
 
 /* ─── Toast ──────────────────────────────────────────────────────────────────── */
 .toast {
