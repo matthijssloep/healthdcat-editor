@@ -1,10 +1,10 @@
-/* style.css — HealthDCAT-AP Metadata Editor */
+/* style.css — CancerWatch Metadata Editor */
 
 /* ─── Variables ──────────────────────────────────────────────────────────────── */
 :root {
-  --blue:        #1a6bbf;
-  --blue-dark:   #0d4e8f;
-  --blue-light:  #e8f1fb;
+  --blue:        #63a9dc;
+  --blue-dark:   #5f7d95;
+  --blue-light:  #e4f1fa;
   --green:       #18a058;
   --green-light: #e8f7ef;
   --amber:       #c47400;
@@ -18,11 +18,12 @@
   --gray-500:    #868e96;
   --gray-700:    #495057;
   --gray-900:    #212529;
+  --charcoal:    #373737;
   --radius:      8px;
   --radius-sm:   4px;
   --shadow:      0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
   --shadow-md:   0 4px 12px rgba(0,0,0,.1);
-  --font:        -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font:        'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   --mono:        'Consolas', 'Monaco', 'Courier New', monospace;
 }
 
@@ -32,7 +33,7 @@ body { font-family: var(--font); font-size: 15px; color: var(--gray-900); backgr
 
 /* ─── Header ─────────────────────────────────────────────────────────────────── */
 header {
-  background: var(--blue-dark);
+  background: var(--charcoal);
   color: white;
   box-shadow: var(--shadow-md);
   position: sticky;
@@ -124,7 +125,7 @@ header {
 .step-pip.active .pip-circle {
   background: var(--blue);
   color: white;
-  box-shadow: 0 0 0 3px rgba(26, 107, 191, .25);
+  box-shadow: 0 0 0 3px rgba(99, 169, 220, .25);
 }
 .pip-label {
   font-size: 10px;
@@ -259,7 +260,7 @@ main {
 .form-input:focus, .form-select:focus {
   outline: none;
   border-color: var(--blue);
-  box-shadow: 0 0 0 3px rgba(26, 107, 191, .15);
+  box-shadow: 0 0 0 3px rgba(99, 169, 220, .15);
 }
 .form-input--short { max-width: 200px; }
 
@@ -303,7 +304,7 @@ textarea.form-input {
   cursor: pointer;
   appearance: none;
 }
-.lang-select:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(26,107,191,.15); }
+.lang-select:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(99,169,220,.15); }
 
 .btn-remove {
   width: 30px;
@@ -514,9 +515,9 @@ textarea.form-input {
   font-weight: 700;
   cursor: pointer;
   transition: all .15s;
-  box-shadow: 0 2px 8px rgba(26,107,191,.3);
+  box-shadow: 0 2px 8px rgba(99,169,220,.3);
 }
-.btn-publish:hover { background: var(--blue-dark); box-shadow: 0 4px 12px rgba(26,107,191,.4); }
+.btn-publish:hover { background: var(--blue-dark); box-shadow: 0 4px 12px rgba(99,169,220,.4); }
 .btn-publish--warn { background: #b7791f; }
 .btn-publish--warn:hover { background: #975f17; }
 .publish-hint {
@@ -615,7 +616,7 @@ footer {
 }
 .ts-wrapper.focus .ts-control {
   border-color: var(--blue) !important;
-  box-shadow: 0 0 0 3px rgba(26,107,191,.15) !important;
+  box-shadow: 0 0 0 3px rgba(99,169,220,.15) !important;
 }
 .ts-control .item {
   background: var(--blue-light) !important;
@@ -752,6 +753,147 @@ footer {
   content: '⚠';
   font-size: 11px;
 }
+
+/* ─── Help button ────────────────────────────────────────────────────────────── */
+.help-btn {
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  border: 1.5px solid var(--blue);
+  background: white;
+  color: var(--blue);
+  font-size: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 4px;
+  transition: all .15s;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+.help-btn:hover { background: var(--blue); color: white; }
+
+/* ─── Help panel ─────────────────────────────────────────────────────────────── */
+.help-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.2);
+  z-index: 200;
+}
+.help-overlay.is-open { display: block; }
+
+.help-panel {
+  position: fixed;
+  top: 0;
+  right: -420px;
+  width: 400px;
+  max-width: 100vw;
+  height: 100vh;
+  background: white;
+  box-shadow: -4px 0 20px rgba(0,0,0,.12);
+  z-index: 201;
+  display: flex;
+  flex-direction: column;
+  transition: right .25s ease;
+}
+.help-panel.is-open { right: 0; }
+
+.help-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--gray-200);
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--gray-700);
+  background: var(--gray-50);
+  flex-shrink: 0;
+  letter-spacing: .03em;
+  text-transform: uppercase;
+}
+.help-close {
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  color: var(--gray-500);
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+  line-height: 1;
+}
+.help-close:hover { background: var(--gray-200); color: var(--gray-900); }
+
+.help-panel-body {
+  padding: 20px;
+  overflow-y: auto;
+  flex: 1;
+}
+.help-field-name {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--gray-900);
+  text-transform: capitalize;
+  margin-bottom: 4px;
+  line-height: 1.3;
+}
+.help-uri {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--gray-500);
+  margin-bottom: 16px;
+}
+.help-section {
+  margin-bottom: 16px;
+}
+.help-section h4 {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  color: var(--gray-500);
+  margin-bottom: 6px;
+}
+.help-section p {
+  font-size: 13px;
+  color: var(--gray-700);
+  line-height: 1.65;
+}
+.help-example {
+  background: var(--blue-light);
+  border: 1px solid #b8d4f5;
+  border-radius: var(--radius-sm);
+  padding: 12px;
+}
+.help-example code {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--blue-dark);
+  word-break: break-all;
+  white-space: pre-wrap;
+}
+.help-iknl-comment {
+  background: var(--gray-50);
+  border-left: 3px solid var(--gray-300);
+  padding: 10px 12px;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+.help-iknl-comment p { font-style: italic; }
+.help-spec-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 4px;
+  font-size: 13px;
+  color: var(--blue);
+  text-decoration: none;
+  font-weight: 600;
+}
+.help-spec-link:hover { text-decoration: underline; }
 
 /* ─── Toast ──────────────────────────────────────────────────────────────────── */
 .toast {
