@@ -11,6 +11,10 @@ const state = {
     descriptions: [{ value: '', lang: 'en' }],
     version: '', identifier: '',
 
+    // Dataset Series (FDP harvesting)
+    seriesURI: '', seriesTitle: '', seriesTitleLang: 'en',
+    seriesDescription: '', seriesDescriptionLang: 'en',
+
     // Step 2: Access & Legal
     accessRights: '', legislation: [], personalData: '', legalBases: [],
     retentionPeriodStart: '', retentionPeriodEnd: '',
@@ -465,6 +469,7 @@ function saveFormData() {
   // Plain fields
   [
     'datasetURI','identifier','version','alternativeTitle','alternativeTitleLang',
+    'seriesURI','seriesTitle','seriesTitleLang','seriesDescription','seriesDescriptionLang',
     'accessRights','personalData','retentionPeriodStart','retentionPeriodEnd',
     'retentionNote','retentionNoteLang',
     'hdabName','hdabNameLang','hdabEmail','hdabURL', 'codingSystem',
@@ -654,6 +659,22 @@ function renderIdentity(container) {
         `<input type="text" class="form-input form-input--short" name="version" value="${escHtml(d.version)}" placeholder="e.g. 1.0">`,'version')}
       ${fieldWrap('Custom Identifier','Override the dataset identifier (defaults to the URI above). Must be a valid URI.','optional',
         `<input type="text" class="form-input" name="identifier" data-validate="iri" value="${escHtml(d.identifier)}" placeholder="e.g. https://data.yourdomain.nl/datasets/my-dataset">`,'identifier')}
+    </div>
+    <div class="card">
+      <h3>Dataset Series</h3>
+      <p class="card-desc">If this dataset is part of a collection or cohort, link it to a Dataset Series. Required for FAIR Data Point harvesting — the series is used as the top-level grouping (e.g. biobank or study).</p>
+      ${fieldWrap('Series URI','Permanent identifier for the series. Leave blank to auto-generate from title.','optional',
+        `<input type="url" class="form-input" name="seriesURI" value="${escHtml(d.seriesURI)}" placeholder="https://data.yourdomain.nl/datasetseries/my-cohort">`,'seriesURI')}
+      ${fieldWrap('Series Title','Name of the collection or study this dataset belongs to.','recommended',
+        `<div class="multi-row">
+          <input type="text" class="form-input multi-text" name="seriesTitle" value="${escHtml(d.seriesTitle)}" placeholder="e.g. Netherlands Cancer Registry Cohort">
+          ${langSelect(d.seriesTitleLang,'seriesTitleLang')}
+        </div>`,'seriesTitle')}
+      ${fieldWrap('Series Description','Brief description of the series.','optional',
+        `<div class="multi-row">
+          <textarea class="form-input multi-text" name="seriesDescription" rows="2" placeholder="Describe the dataset series…">${escHtml(d.seriesDescription)}</textarea>
+          ${langSelect(d.seriesDescriptionLang,'seriesDescriptionLang')}
+        </div>`,'seriesDescription')}
     </div>`;
 }
 
