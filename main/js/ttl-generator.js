@@ -121,9 +121,16 @@ function generateTTL(data) {
   const datasetURI = (data.datasetURI || '').trim()
     || `https://example.org/dataset/${slugify(data.titles?.[0]?.value || 'untitled')}`;
 
+  // ── Dataset Series ──
+  const hasSeriesTitle = (data.seriesTitle || '').trim();
+  const seriesURI = (data.seriesURI || '').trim()
+    || (hasSeriesTitle ? `https://example.org/datasetseries/${slugify(hasSeriesTitle)}` : null);
+
   const props = [];
 
   // ── Identity ──
+  if (seriesURI) props.push(['dcat:inSeries', uriRef(seriesURI)]);
+
   const titleLit = multiLit(data.titles);
   if (titleLit) props.push(['dct:title', titleLit]);
 
@@ -237,7 +244,8 @@ function generateTTL(data) {
   if (data.contactEmail || data.contactURL) {
     props.push(['dcat:contactPoint', '_:contactPoint']);
     const cpPairs = [];
-    if (data.contactEmail)   cpPairs.push(['vcard:hasEmail', lit(data.contactEmail)]);
+    if (data.contactOrgName) cpPairs.push(['vcard:fn', lit(data.contactOrgName)]);
+    if (data.contactEmail)   cpPairs.push(['vcard:hasEmail', uriRef('mailto:' + data.contactEmail)]);
     if (data.contactURL)     cpPairs.push(['vcard:hasURL',   uriRef(data.contactURL)]);
     if (data.contactOrgName) cpPairs.push(['vcard:organization-name', lit(data.contactOrgName)]);
     if (data.contactOrgUnit) cpPairs.push(['vcard:organization-unit', lit(data.contactOrgUnit)]);
@@ -367,6 +375,17 @@ function generateTTL(data) {
 
   lines.push('');
   bNodes.forEach(block => { if (block) { lines.push(block); lines.push(''); } });
+
+  // ── DatasetSeries block ──
+  if (seriesURI) {
+    const seriesPairs = [];
+    seriesPairs.push(['dct:identifier', lit(seriesURI)]);
+    if (hasSeriesTitle) seriesPairs.push(['dct:title', lit(hasSeriesTitle, data.seriesTitleLang || 'en')]);
+    if ((data.seriesDescription || '').trim()) seriesPairs.push(['dct:description', lit(data.seriesDescription.trim(), data.seriesDescriptionLang || 'en')]);
+    seriesPairs.push(['dcat:seriesMember', uriRef(datasetURI)]);
+    lines.push(renderBlock(`<${seriesURI}>`, 'dcat:DatasetSeries', seriesPairs));
+    lines.push('');
+  }
 
   return lines.join('\n');
 }
