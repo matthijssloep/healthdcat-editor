@@ -32,8 +32,16 @@
 body { font-family: var(--font); font-size: 15px; color: var(--gray-900); background: var(--gray-100); min-height: 100vh; display: flex; flex-direction: column; }
 
 /* ─── Header ─────────────────────────────────────────────────────────────────── */
+@keyframes gradient-drift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
 header {
-  background: var(--charcoal);
+  background: linear-gradient(-45deg, #373737, #5f7d95, #63a9dc, #373737);
+  background-size: 400% 400%;
+  animation: gradient-drift 10s ease infinite;
   color: white;
   box-shadow: var(--shadow-md);
   position: sticky;
