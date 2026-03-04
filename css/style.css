@@ -2,13 +2,13 @@
 
 /* ─── Variables ──────────────────────────────────────────────────────────────── */
 :root {
-  --blue:        #63a9dc;
-  --blue-dark:   #5f7d95;
-  --blue-light:  #e4f1fa;
+  --blue:        #41B1E0;
+  --blue-dark:   #1870A0;
+  --blue-light:  #E8F5FB;
   --green:       #18a058;
   --green-light: #e8f7ef;
-  --amber:       #c47400;
-  --amber-light: #fef3e2;
+  --amber:       #F39200;
+  --amber-light: #FEF0DC;
   --red:         #c0392b;
   --red-light:   #fdecea;
   --gray-50:     #f8f9fa;
@@ -18,19 +18,22 @@
   --gray-500:    #868e96;
   --gray-700:    #495057;
   --gray-900:    #212529;
-  --charcoal:    #373737;
+  --charcoal:    #104972;
+  --navy-deep:   #023399;
+  --yellow:      #FFED00;
+  --teal:        #00C3B1;
   --radius:      8px;
   --radius-sm:   4px;
   --shadow:      0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
   --shadow-md:   0 4px 12px rgba(0,0,0,.1);
-  --font:        'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font:        'Montserrat', 'Century Gothic', 'Trebuchet MS', sans-serif;
   --mono:        'Consolas', 'Monaco', 'Courier New', monospace;
   --header-h:    92px;
 }
 
 /* ─── Reset ──────────────────────────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: var(--font); font-size: 15px; color: var(--gray-900); background: var(--gray-100); min-height: 100vh; display: flex; flex-direction: column; }
+body { font-family: var(--font); font-size: 15px; color: var(--gray-900); background: #EDF2F7; min-height: 100vh; display: flex; flex-direction: column; }
 
 /* ─── Header ─────────────────────────────────────────────────────────────────── */
 @keyframes gradient-drift {
@@ -40,9 +43,9 @@ body { font-family: var(--font); font-size: 15px; color: var(--gray-900); backgr
 }
 
 header {
-  background: linear-gradient(-45deg, #373737, #5f7d95, #63a9dc, #373737);
+  background: linear-gradient(-45deg, #104972, #1870A0, #41B1E0, #104972);
   background-size: 400% 400%;
-  animation: gradient-drift 10s ease infinite;
+  animation: gradient-drift 60s ease infinite;
   color: white;
   box-shadow: var(--shadow-md);
   position: sticky;
@@ -135,7 +138,7 @@ header {
 .step-pip.active .pip-circle {
   background: var(--blue);
   color: white;
-  box-shadow: 0 0 0 3px rgba(99, 169, 220, .3);
+  box-shadow: 0 0 0 3px rgba(65, 177, 224, .3);
 }
 
 .pip-label {
@@ -333,7 +336,7 @@ textarea.form-input {
   cursor: pointer;
   appearance: none;
 }
-.lang-select:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(99,169,220,.15); }
+.lang-select:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(65,177,224,.15); }
 
 .btn-remove {
   width: 30px;
@@ -544,9 +547,9 @@ textarea.form-input {
   font-weight: 700;
   cursor: pointer;
   transition: all .15s;
-  box-shadow: 0 2px 8px rgba(99,169,220,.3);
+  box-shadow: 0 2px 8px rgba(65,177,224,.3);
 }
-.btn-publish:hover { background: var(--blue-dark); box-shadow: 0 4px 12px rgba(99,169,220,.4); }
+.btn-publish:hover { background: var(--blue-dark); box-shadow: 0 4px 12px rgba(65,177,224,.4); }
 .btn-publish--warn { background: #b7791f; }
 .btn-publish--warn:hover { background: #975f17; }
 .publish-hint {
@@ -645,18 +648,18 @@ footer {
 }
 .ts-wrapper.focus .ts-control {
   border-color: var(--blue) !important;
-  box-shadow: 0 0 0 3px rgba(99,169,220,.15) !important;
+  box-shadow: 0 0 0 3px rgba(65,177,224,.15) !important;
 }
 .ts-control .item {
   background: var(--blue-light) !important;
   color: var(--blue-dark) !important;
-  border: 1px solid #b8d4f5 !important;
+  border: 1px solid #b3dff2 !important;
   border-radius: 4px !important;
   font-size: 13px !important;
   padding: 2px 6px !important;
 }
 .ts-control .item .remove {
-  border-left: 1px solid #b8d4f5 !important;
+  border-left: 1px solid #b3dff2 !important;
   color: var(--blue) !important;
   margin-left: 4px !important;
 }
@@ -677,7 +680,7 @@ footer {
 /* ─── Info banner ────────────────────────────────────────────────────────────── */
 .info-banner {
   background: var(--blue-light);
-  border: 1px solid #b8d4f5;
+  border: 1px solid #b3dff2;
   border-radius: var(--radius-sm);
   padding: 10px 14px;
   font-size: 13px;
@@ -894,7 +897,7 @@ footer {
 }
 .help-example {
   background: var(--blue-light);
-  border: 1px solid #b8d4f5;
+  border: 1px solid #b3dff2;
   border-radius: var(--radius-sm);
   padding: 12px;
 }
