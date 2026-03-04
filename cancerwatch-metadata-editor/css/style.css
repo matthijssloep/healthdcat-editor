@@ -2,35 +2,38 @@
 
 /* ─── Variables ──────────────────────────────────────────────────────────────── */
 :root {
-  --blue:        #00518E;
-  --blue-dark:   #003D6B;
-  --blue-light:  #BFD4E3;
+  --blue:        #41B1E0;
+  --blue-dark:   #1870A0;
+  --blue-light:  #E8F5FB;
   --green:       #18a058;
   --green-light: #e8f7ef;
-  --amber:       #EFC700;
-  --amber-light: #FDF8DC;
+  --amber:       #F39200;
+  --amber-light: #FEF0DC;
   --red:         #c0392b;
   --red-light:   #fdecea;
   --gray-50:     #f8f9fa;
-  --gray-100:    #F1F1F1;
-  --gray-200:    #DCDCDC;
+  --gray-100:    #f1f3f5;
+  --gray-200:    #e9ecef;
   --gray-300:    #dee2e6;
-  --gray-500:    #9B9B9B;
-  --gray-700:    #4A4A4A;
+  --gray-500:    #868e96;
+  --gray-700:    #495057;
   --gray-900:    #212529;
-  --charcoal:    #003D6B;
+  --charcoal:    #104972;
+  --navy-deep:   #023399;
+  --yellow:      #FFED00;
+  --teal:        #00C3B1;
   --radius:      8px;
   --radius-sm:   4px;
   --shadow:      0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
   --shadow-md:   0 4px 12px rgba(0,0,0,.1);
-  --font:        'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font:        'Montserrat', 'Century Gothic', 'Trebuchet MS', sans-serif;
   --mono:        'Consolas', 'Monaco', 'Courier New', monospace;
   --header-h:    92px;
 }
 
 /* ─── Reset ──────────────────────────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: var(--font); font-size: 15px; color: var(--gray-900); background: #F1F1F1; min-height: 100vh; display: flex; flex-direction: column; }
+body { font-family: var(--font); font-size: 15px; color: var(--gray-900); background: #EDF2F7; min-height: 100vh; display: flex; flex-direction: column; }
 
 /* ─── Header ─────────────────────────────────────────────────────────────────── */
 @keyframes gradient-drift {
@@ -40,7 +43,7 @@ body { font-family: var(--font); font-size: 15px; color: var(--gray-900); backgr
 }
 
 header {
-  background: linear-gradient(-45deg, #003D6B, #00518E, #0069B3, #003D6B);
+  background: linear-gradient(-45deg, #104972, #1870A0, #41B1E0, #104972);
   background-size: 400% 400%;
   animation: gradient-drift 60s ease infinite;
   color: white;
@@ -333,7 +336,7 @@ textarea.form-input {
   cursor: pointer;
   appearance: none;
 }
-.lang-select:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(0,81,142,.15); }
+.lang-select:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(65,177,224,.15); }
 
 .btn-remove {
   width: 30px;
@@ -544,9 +547,9 @@ textarea.form-input {
   font-weight: 700;
   cursor: pointer;
   transition: all .15s;
-  box-shadow: 0 2px 8px rgba(0,81,142,.3);
+  box-shadow: 0 2px 8px rgba(65,177,224,.3);
 }
-.btn-publish:hover { background: var(--blue-dark); box-shadow: 0 4px 12px rgba(0,81,142,.4); }
+.btn-publish:hover { background: var(--blue-dark); box-shadow: 0 4px 12px rgba(65,177,224,.4); }
 .btn-publish--warn { background: #b7791f; }
 .btn-publish--warn:hover { background: #975f17; }
 .publish-hint {
@@ -645,18 +648,18 @@ footer {
 }
 .ts-wrapper.focus .ts-control {
   border-color: var(--blue) !important;
-  box-shadow: 0 0 0 3px rgba(0,81,142,.15) !important;
+  box-shadow: 0 0 0 3px rgba(65,177,224,.15) !important;
 }
 .ts-control .item {
   background: var(--blue-light) !important;
   color: var(--blue-dark) !important;
-  border: 1px solid #BFD4E3 !important;
+  border: 1px solid #b3dff2 !important;
   border-radius: 4px !important;
   font-size: 13px !important;
   padding: 2px 6px !important;
 }
 .ts-control .item .remove {
-  border-left: 1px solid #BFD4E3 !important;
+  border-left: 1px solid #b3dff2 !important;
   color: var(--blue) !important;
   margin-left: 4px !important;
 }
@@ -677,7 +680,7 @@ footer {
 /* ─── Info banner ────────────────────────────────────────────────────────────── */
 .info-banner {
   background: var(--blue-light);
-  border: 1px solid #BFD4E3;
+  border: 1px solid #b3dff2;
   border-radius: var(--radius-sm);
   padding: 10px 14px;
   font-size: 13px;
@@ -894,7 +897,7 @@ footer {
 }
 .help-example {
   background: var(--blue-light);
-  border: 1px solid #BFD4E3;
+  border: 1px solid #b3dff2;
   border-radius: var(--radius-sm);
   padding: 12px;
 }
