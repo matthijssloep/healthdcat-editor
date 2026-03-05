@@ -183,7 +183,7 @@ main {
   left: 0;
   right: 0;
   bottom: 0;
-  background: url('https://assets.w3.tue.nl/w/fileadmin/user_upload/FAIR.jpg') repeat center / 560px auto;
+  background: url('https://assets.w3.tue.nl/w/fileadmin/user_upload/FAIR.jpg') no-repeat center / 1680px auto;
   opacity: 0.10;
   pointer-events: none;
   z-index: 0;
